@@ -6,7 +6,17 @@ exports.covid19ImpactEstimator = (data) => {
 	impact.currentlyInfected = currentlyInfected
 	severeImpact.currentlyInfected = data.reportedCases * 50
 
-	impact.infectionsByRequestedTime = impact.currentlyInfected * 2**Math.trunc(data.timeToElapse/3)
+	var timeToElapse = data.timeToElapse
+	var elapsedTime = 0
+	if (data.periodType == "days") {
+		elapsedTime = timeToElapse
+	} else if (data.periodType == 'weeks') {
+		elapsedTime = timeToElapse * 7
+	}else if (data.periodType == "months") {
+		elapsedTime = timeToElapse * 30
+	}
+
+	impact.infectionsByRequestedTime = impact.currentlyInfected * 2**Math.trunc(elapsedTime/3)
 	severeImpact.infectionsByRequestedTime = severeImpact.currentlyInfected * 2**Math.trunc(data.timeToElapse/3)
 
 	impact.severeCasesByRequestedTime = severeImpact.infectionsByRequestedTime * 0.15
