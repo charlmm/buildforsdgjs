@@ -5,8 +5,12 @@ var fs = require('fs')
 var path = require('path')
 var estimator = require('./src/estimator.js').covid19ImpactEstimator
 var xml = require('xml')
+var dotenv = require('dotenv')
+
+dotenv.config()
 
 var app = express()
+var port = process.env.PORT || 3000
 
 app.use(bodyParser())
 
@@ -60,4 +64,4 @@ app.get('/api/v1/on-covid-19', (req,res) => {
 	res.json(estimator(data))
 })
 
-app.listen('3000', () => console.log("listening on port 3000"))
+app.listen(port, () => console.log("listening on port 3000"))
